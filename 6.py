@@ -7,7 +7,7 @@ class CSVFile:
     self.name = name
     
     if type(self.name) != str:
-      raise Errore()
+      raise Exception('il nome non è una stringa')
 
     self.can_read = True
 
@@ -19,28 +19,81 @@ class CSVFile:
       self.can_read = False
       print('Errore in apertura del file: "{}"'.format(e))
 
-  def get_data(self):
+  def get_data(self, start = None, end = None):
 
     #se il file non è leggibile ritorna None
     if self.can_read == False:
       print('Errore: file vuoto o illeggibile')
       return None
     else:
-      my_file = open(self.name, 'r')
-
+      
+      my_file = open(self.name, 'r')  
+      
+      n_righe = 0
       data = []
-
+      tmp_data = []
+      
       for line in my_file:
         elements = line.split(',')
         elements[-1] = elements[-1].strip()
 
         if elements[0] != 'Date':
 
-          data.append(elements)
-
+          tmp_data.append(elements)
+          
+      n_righe = len(tmp_data)
+      
+      
       my_file.close()
+      
+#------Test su start end------------------------
+      if start == 0:
+        raise Exception("la riga 0 non esiste")
+      
+      if start == None and end == None: data = tmp_data
+      
+      if start == None and end != None:
+        raise Exception("non c'è uno start")
+        return None
+        
+      if end == None and start != None:
+        raise Exception("non c'è una end")
+        return None
+        
+      #start.replace(" ", "")
+      #end.replace(" ", "")
+      
+      if type(start) != int:
+        raise Exception("lo start non è un intero")
+        return None
+        
+      if type(end) != int:
+        raise Exception("l'end non è un intero")
+        return None
 
+      if start > n_righe:
+        raise Exception("la riga start non esiste")
+        return None
+
+      if end < start:
+        raise Exception("start è maggiore di end")
+        return None
+
+      if end > n_righe and end > start:
+        data = tmp_data
+        
+#------------------------------------------------------ 
+      #for i,line in enumerate(tmp_data):
+        #if i in righe:
+          #data.append(line)
+        #else:
+          #pass
+        
+      data = tmp_data[start:end]
       return data
+
+      
+
 
 
 class NumericalCSVFile(CSVFile):
