@@ -1,2 +1,3 @@
-# Laboratorio
-Laboratorio di programmazione con prof Stefano Russo
+#Python lab course
+
+"Introduzione alla programmazione" course with prof. Stefano Alberto Russo
